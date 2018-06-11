@@ -1,0 +1,87 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:1.6.0")
+        classpath("gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:1.1.2")
+    }
+}
+
+
+ext {
+    env = System.getProperty("environment","local")
+}
+
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'com.browserstack', name: 'browserstack-local-java', version: '1.0.2'
+    compile('junit:junit:4.12')
+
+    testCompile('junit:junit:4.12')
+    testCompile('org.assertj:assertj-core:3.8.0')
+    testCompile('org.slf4j:slf4j-simple:1.7.7')
+    testCompile('net.serenity-bdd:serenity-core:1.6.0')
+    testCompile('net.serenity-bdd:serenity-junit:1.6.0')
+    testCompile('net.serenity-bdd:serenity-rest-assured:1.6.0')
+    testCompile('net.serenity-bdd:serenity-spring:1.6.0')
+    testCompile('net.serenity-bdd:serenity-cucumber:1.5.9')
+    testCompile('org.apache.poi:poi:3.17')
+    testCompile('org.apache.poi:poi-ooxml:3.17')
+}
+
+tasks.withType(Test) {
+}
+
+test {
+    systemProperty 'environment', "${env}"
+    systemProperty 'BROWSERSTACK_ACCESS_KEY', "${browserStackKey}"
+    systemProperty 'BROWSERSTACK_USERNAME', "${browserStackUsername}"
+    systemProperty 'webdriver.base.url', "${baseURL}"
+    filter {
+        includeTestsMatching "TestRunner"
+    }
+}
+
+testRail {
+    systemProperty 'TESTRAIL_USERNAME', "${testRailUser}"
+    systemProperty 'TESTRAIL_PASSWORD', "${testRailPassword}"
+    systemProperty 'TESTRAIL_URL', "${testRailURL}"
+    filter {
+        includeTestsMatching "ATestRail"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.7'
+}
+
+
+gradle.startParameter.continueOnFailure = true
+
+
+
+
