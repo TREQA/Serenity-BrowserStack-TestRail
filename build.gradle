@@ -61,19 +61,23 @@ test {
     systemProperty 'BROWSERSTACK_ACCESS_KEY', "${browserStackKey}"
     systemProperty 'BROWSERSTACK_USERNAME', "${browserStackUsername}"
     systemProperty 'webdriver.base.url', "${baseURL}"
+	
+	systemProperty 'TESTRAIL_USERNAME', "${testRailUser}"
+    systemProperty 'TESTRAIL_PASSWORD', "${testRailPassword}"
+    systemProperty 'TESTRAIL_URL', "${testRailURL}"
     filter {
         includeTestsMatching "TestRunner"
     }
 }
 
-testRail {
-    systemProperty 'TESTRAIL_USERNAME', "${testRailUser}"
-    systemProperty 'TESTRAIL_PASSWORD', "${testRailPassword}"
-    systemProperty 'TESTRAIL_URL', "${testRailURL}"
-    filter {
-        includeTestsMatching "ATestRail"
-    }
-}
+//testRail {
+    //systemProperty 'TESTRAIL_USERNAME', "${testRailUser}"
+    //systemProperty 'TESTRAIL_PASSWORD', "${testRailPassword}"
+    //systemProperty 'TESTRAIL_URL', "${testRailURL}"
+    //filter {
+        //includeTestsMatching "ATestRail"
+    //}
+//}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.7'

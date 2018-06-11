@@ -20,6 +20,8 @@ run with the following command:
 ##Variables that need to be present in the gradle.properties file:
 `browserStackKey=`   add the key which is provided by BrowserStack
 `browserStackUsername=`  add the Username which can be found on the BrowserStack website (no quotation marks required).
+`baseURL=` add the base URL of the website under test (e.g. www.carrefour.ro)
+
 Alternatively you can  define these values directly into the serenity.properties file.
 
 
@@ -27,3 +29,16 @@ Alternatively you can  define these values directly into the serenity.properties
 In order to run with selenium grid, make sure the `webdriver.remote.url=` & `webdriver.remote.driver` are not commented
 out in the serenity.properties file.
 
+#TestRail Integration
+TestRail integration is done through the contents of the TestRail package (provided classes), as well as the CucumberHooks and TestRailRule
+classes which can be found in the Utils package.
+
+To adapt the integration to your TestRail Project please modify the TestRailRule class (addPlanEntry method) with your information.
+
+##Linking cases
+In order to link a Scenario to a testcase in TestRail use the following annotation format: @TestRailId-### where "###" is replaced with the ID of the testcase within TestRail.
+
+##Variables that need to be present in the gradle.properties file:
+`testRailUser`
+`testRailPassword`
+`testRailURL`
